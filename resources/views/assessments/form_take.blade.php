@@ -20,17 +20,27 @@
 <table class="table table-bordered table-responsive-md" width="100%">
     @foreach (App\AssCategory::where('active', true)->orderBy('order_number')->get() as $category)
     <tr>
-        <td width="20%" style="font-weight: bold;">{{ $category->description }}<br />(Total: {{ App\AssItem::where('category_id', $category->id)->where('active', true)->sum('weight') }})</td>
         <td>
-            <table class="table table-striped table-hover" width="100%">
-                @foreach (App\AssItem::where('category_id', $category->id)->where('active', true)->orderBy('order_number')->get() as $item)
-                <tr>
-                    <td width="60%">{{ $item->description }}</td>
-                    <td width="20%">{!! Form::select('option'.$item->id, App\AssOption::select(DB::raw("CONCAT(description, ' (', score, ')') AS opt"), 'id')->where('item_id', $item->id)->orderBy('order_number')->pluck('opt', 'id'), $value = null, ['class' => 'form-control select-option', 'placeholder' => '- Select Option -', 'required' => true]) !!}</td>
-                    <td width="20%"><div id="remark{{ $item->id }}" class="text-danger"></div></td>
-                </tr>
-                @endforeach
-            </table>
+            <div class="row">
+                <div class="col-md-2" style="font-weight: bold;">
+                    {{ $category->description }}<br />(Total: {{ App\AssItem::where('category_id', $category->id)->where('active', true)->sum('weight') }})
+                </div>
+                <div class="col-md-10">
+                    <table class="table table-striped table-hover" width="100%">
+                        @foreach (App\AssItem::where('category_id', $category->id)->where('active', true)->orderBy('order_number')->get() as $item)
+                        <tr>
+                            <td>
+                                <div class="row">
+                                    <div class="col-md-7">{{ $item->description }}</div>
+                                    <div class="col-md-2">{!! Form::select('option'.$item->id, App\AssOption::select(DB::raw("CONCAT(description, ' (', score, ')') AS opt"), 'id')->where('item_id', $item->id)->orderBy('order_number')->pluck('opt', 'id'), $value = null, ['class' => 'form-control select-option', 'placeholder' => '- Select Option -', 'required' => true]) !!}</div>
+                                    <div class="col-md-3"><div id="remark{{ $item->id }}" class="text-danger"></div></div>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </table>
+                </div>
+            </div>
         </td>
     </tr>
     @endforeach
