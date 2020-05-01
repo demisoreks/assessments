@@ -31,7 +31,6 @@ class AssessmentsController extends Controller
         foreach (AssCategory::where('assessment_id', $assessment->id)->where('active', true)->get() as $category) {
             foreach (AssItem::where('category_id', $category->id)->where('active', true)->get() as $item) {
                 $option_id = $input['option'.$item->id];
-                $remark = $input['remark'.$item->id];
                 AssResponse::create([
                     'responder_id' => $responder->id,
                     'item_id' => $item->id,
