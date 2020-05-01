@@ -16,6 +16,7 @@
         {!! Form::email('email', $value = null, ['class' => 'form-control', 'placeholder' => 'Email Address', 'required' => true, 'maxlength' => 100]) !!}
     </div>
 </div>
+<?= html_entity_decode($assessment->information) ?>
 <table class="table table-bordered table-responsive-md" width="100%">
     @foreach (App\AssCategory::where('active', true)->orderBy('order_number')->get() as $category)
     <tr>
@@ -25,8 +26,8 @@
                 @foreach (App\AssItem::where('category_id', $category->id)->where('active', true)->orderBy('order_number')->get() as $item)
                 <tr>
                     <td width="60%">{{ $item->description }}</td>
-                    <td width="20%">{!! Form::select('option'.$item->id, App\AssOption::select(DB::raw("CONCAT(description, ' (', score, ')') AS opt"), 'id')->where('item_id', $item->id)->orderBy('order_number')->pluck('opt', 'id'), $value = null, ['class' => 'form-control', 'placeholder' => '- Select Option -', 'required' => true]) !!}</td>
-                    <td width="20%">{!! Form::textarea('remark'.$item->id, $value = null, ['class' => 'form-control', 'placeholder' => 'Remark', 'maxlength' => 200, 'rows' => 2]) !!}</td>
+                    <td width="20%">{!! Form::select('option'.$item->id, App\AssOption::select(DB::raw("CONCAT(description, ' (', score, ')') AS opt"), 'id')->where('item_id', $item->id)->orderBy('order_number')->pluck('opt', 'id'), $value = null, ['class' => 'form-control select-option', 'placeholder' => '- Select Option -', 'required' => true]) !!}</td>
+                    <td width="20%"><div id="remark{{ $item->id }}" class="text-danger"></div></td>
                 </tr>
                 @endforeach
             </table>
@@ -42,9 +43,8 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $("#location_id").change(function() {
-            document.getElementById('course_id').length = 1;
-            var location_id = $("#location_id").val();
+        $(".select-option").change(function() {
+            var option_id  = $(this).val();
             var myString = "";
             
             var ajaxRequest = null;
@@ -59,15 +59,11 @@
             ajaxRequest.onreadystatechange = function() {
                 if (ajaxRequest.readyState == 4) {
                     var json_object = JSON.parse(ajaxRequest.responseText);
-                    for (var key in json_object) {
-                        if (json_object.hasOwnProperty(key)) {
-                            $("#course_id").append("<option value='"+json_object[key].id+"'>"+json_object[key].start+" - "+json_object[key].end+"</option>");
-                        }
-                    }
+                    $('#remark'+json_object.item_id).text(json_object.remark);
                 }
             }
             
-            ajaxRequest.open("GET", "locations/"+location_id+"/getCoursesDesc", true);
+            ajaxRequest.open("GET", "../../option/"+option_id, true);
             ajaxRequest.send(null);
         });
     });

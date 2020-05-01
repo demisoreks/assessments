@@ -42,6 +42,7 @@
                         <td align="right" style="font-weight: bold;">{{ number_format((App\AssResponse::where('responder_id', $responder->id)->sum('option_score'))/(App\AssResponse::where('responder_id', $responder->id)->sum('item_weight'))*100, 2) }}%</td>
                     </tr>
                 </table>
+                <?= html_entity_decode($responder->assessment->closing_remark) ?>
             </div>
         </div>
     </div>

@@ -31,3 +31,10 @@ Route::get('assessments/{responder}/result', [
 Route::bind('responders', function($value, $route) {
     return App\AssResponder::findBySlug($value)->first();
 });
+
+Route::get('option/{id}', function($id) {
+    return App\AssOption::find($id);
+});
+Route::bind('options', function($value, $route) {
+    return App\AssOption::findBySlug($value)->first();
+});

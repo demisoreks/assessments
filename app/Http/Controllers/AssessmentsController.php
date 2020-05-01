@@ -38,8 +38,7 @@ class AssessmentsController extends Controller
                     'item_weight' => $item->weight,
                     'option_id' => $option_id,
                     'option_description' => AssOption::find($option_id)->description,
-                    'option_score' => AssOption::find($option_id)->score,
-                    'remark' => $remark
+                    'option_score' => AssOption::find($option_id)->score
                 ]);
             }
         }

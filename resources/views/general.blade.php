@@ -196,9 +196,11 @@
         <div class="container-fluid" style="height: 100vh;">
             <div class="row bg-primary">
                 <div class="col-md-12">
-                    <div class="text-white float-left" style="display: flex; align-items: center; justify-content: center;">
-                        {{ Html::image('images/logo-new-small.jpg', 'Halogen Logo', ['width' => 60]) }}&nbsp;&nbsp;
-                        <h4><span class="font-weight-bold">Academy</span>Halogen - Assessment Portal</h4>
+                    <div class="text-white float-md-left" style="display: flex; align-items: center; justify-content: center;">
+                        {{ Html::image('images/logo-new.jpg', 'Halogen Logo', ['width' => 120]) }}
+                    </div>
+                    <div class="text-white float-md-right" style="display: flex; align-items: center; justify-content: center; height: 100%">
+                        <em>Safety in an open world.</em>
                     </div>
                 </div>
             </div>
