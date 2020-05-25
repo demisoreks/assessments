@@ -11,9 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+$link_id = (int) config('var.link_id');
+
+Route::get('/', [
+    'as' => 'welcome', 'uses' => 'WelcomeController@index'
+])->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
 
 Route::post('assessments/{assessment}/submit', [
     'as' => 'assessments.submit', 'uses' => 'AssessmentsController@submit'
@@ -21,6 +23,7 @@ Route::post('assessments/{assessment}/submit', [
 Route::get('assessments/{assessment}/take', [
     'as' => 'assessments.take', 'uses' => 'AssessmentsController@take'
 ]);
+Route::resource('assessments', 'AssessmentsController')->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
 Route::bind('assessments', function($value, $route) {
     return App\AssAssessment::findBySlug($value)->first();
 });
@@ -28,6 +31,7 @@ Route::bind('assessments', function($value, $route) {
 Route::get('assessments/{responder}/result', [
     'as' => 'assessments.result', 'uses' => 'AssessmentsController@result'
 ]);
+Route::resource('assessments.responders', 'RespondersController');
 Route::bind('responders', function($value, $route) {
     return App\AssResponder::findBySlug($value)->first();
 });

@@ -14,12 +14,15 @@ use App\AssResponse;
 
 class AssessmentsController extends Controller
 {
-    
-    
+    public function index() {
+        $assessments = AssAssessment::all();
+        return view('assessments.index', compact('assessments'));
+    }
+
     public function take(AssAssessment $assessment) {
         return view('general.take', compact('assessment'));
     }
-    
+
     public function submit(AssAssessment $assessment, Request $request) {
         $input = $request->input();
         $responder = AssResponder::create([
@@ -43,7 +46,7 @@ class AssessmentsController extends Controller
         }
         return Redirect::route('assessments.result', [$responder->slug()]);
     }
-    
+
     public function result(AssResponder $responder) {
         return view('assessments.result', compact('responder'));
     }
