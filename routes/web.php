@@ -31,6 +31,9 @@ Route::bind('assessments', function($value, $route) {
 Route::get('assessments/{responder}/result', [
     'as' => 'assessments.result', 'uses' => 'AssessmentsController@result'
 ]);
+Route::get('assessments/{assessment}/responders/{responder}/scores', [
+    'as' => 'assessments.responders.scores', 'uses' => 'RespondersController@scores'
+]);
 Route::resource('assessments.responders', 'RespondersController');
 Route::bind('responders', function($value, $route) {
     return App\AssResponder::findBySlug($value)->first();

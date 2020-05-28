@@ -37,6 +37,7 @@
                                     <th data-priority="1"><strong>{{ strtoupper($category->description) }}</strong></th>
                                     @endforeach
                                     <th data-priority="1"><strong>TOTAL</strong></th>
+                                    <th data-priority="1"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -51,6 +52,7 @@
                                     <td align="right">{{ App\AssResponse::where('responder_id', $responder->id)->whereIn('item_id', App\AssItem::where('category_id', $category->id)->pluck('id')->toArray())->sum('option_score') }}</td>
                                     @endforeach
                                     <td align="right">{{ App\AssResponse::where('responder_id', $responder->id)->sum('option_score') }}</td>
+                                    <td><a class="btn btn-primary btn-block btn-sm" href="{{ route('assessments.responders.scores', [$assessment->slug(), $responder->slug()]) }}">View Scores</a></td>
                                 </tr>
 
                                 @endforeach
