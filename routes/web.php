@@ -30,10 +30,16 @@ Route::bind('assessments', function($value, $route) {
 
 Route::get('assessments/{responder}/result', [
     'as' => 'assessments.result', 'uses' => 'AssessmentsController@result'
-]);
+])->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
 Route::get('assessments/{assessment}/responders/{responder}/scores', [
     'as' => 'assessments.responders.scores', 'uses' => 'RespondersController@scores'
-]);
+])->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
+Route::get('assessments/{assessment}/responders/{responder}/print', [
+    'as' => 'assessments.responders.print', 'uses' => 'RespondersController@print'
+])->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
+Route::get('assessments/{assessment}/responders/{responder}/download', [
+    'as' => 'assessments.responders.download', 'uses' => 'RespondersController@download'
+])->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
 Route::resource('assessments.responders', 'RespondersController');
 Route::bind('responders', function($value, $route) {
     return App\AssResponder::findBySlug($value)->first();

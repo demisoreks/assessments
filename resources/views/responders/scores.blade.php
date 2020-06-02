@@ -15,6 +15,8 @@
     <div class="col-12" style="margin-bottom: 20px;">
         <a class="btn btn-primary" href="{{ route('assessments.index') }}"><i class="fas fa-arrow-left"></i> Back to Assessments</a>
         <a class="btn btn-primary" href="{{ route('assessments.responders.index', [$assessment->slug()]) }}"><i class="fas fa-arrow-left"></i> Back to Responders</a>
+        <a class="btn btn-info" href="{{ route('assessments.responders.print', [$assessment->slug(), $responder->slug()]) }}" target="_blank"><i class="fas fa-print"></i> Print Report</a>
+        <a class="btn btn-info" href="{{ route('assessments.responders.download', [$assessment->slug(), $responder->slug()]) }}" target="_blank"><i class="fas fa-download"></i> Download Report</a>
     </div>
 </div>
 <div class="row">
