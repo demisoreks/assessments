@@ -23,9 +23,48 @@ Route::post('assessments/{assessment}/submit', [
 Route::get('assessments/{assessment}/take', [
     'as' => 'assessments.take', 'uses' => 'AssessmentsController@take'
 ]);
+Route::get('assessments/{assessment}/enable', [
+    'as' => 'assessments.enable', 'uses' => 'AssessmentsController@enable'
+])->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
+Route::get('assessments/{assessment}/disable', [
+    'as' => 'assessments.disable', 'uses' => 'AssessmentsController@disable'
+])->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
 Route::resource('assessments', 'AssessmentsController')->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
 Route::bind('assessments', function($value, $route) {
     return App\AssAssessment::findBySlug($value)->first();
+});
+
+Route::get('assessments/{assessment}/categories/{category}/enable', [
+    'as' => 'assessments.categories.enable', 'uses' => 'CategoriesController@enable'
+])->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
+Route::get('assessments/{assessment}/categories/{category}/disable', [
+    'as' => 'assessments.categories.disable', 'uses' => 'CategoriesController@disable'
+])->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
+Route::resource('assessments.categories', 'CategoriesController')->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
+Route::bind('categories', function($value, $route) {
+    return App\AssCategory::findBySlug($value)->first();
+});
+
+Route::get('assessments/{assessment}/categories/{category}/items/{item}/enable', [
+    'as' => 'assessments.categories.items.enable', 'uses' => 'ItemsController@enable'
+])->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
+Route::get('assessments/{assessment}/categories/{category}/items/{item}/disable', [
+    'as' => 'assessments.categories.items.disable', 'uses' => 'ItemsController@disable'
+])->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
+Route::resource('assessments.categories.items', 'ItemsController')->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
+Route::bind('items', function($value, $route) {
+    return App\AssItem::findBySlug($value)->first();
+});
+
+Route::get('assessments/{assessment}/categories/{category}/items/{item}/options/{option}/enable', [
+    'as' => 'assessments.categories.items.options.enable', 'uses' => 'OptionsController@enable'
+])->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
+Route::get('assessments/{assessment}/categories/{category}/items/{item}/options/{option}/disable', [
+    'as' => 'assessments.categories.items.options.disable', 'uses' => 'OptionsController@disable'
+])->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
+Route::resource('assessments.categories.items.options', 'OptionsController')->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
+Route::bind('options', function($value, $route) {
+    return App\AssOption::findBySlug($value)->first();
 });
 
 Route::get('assessments/{responder}/result', [

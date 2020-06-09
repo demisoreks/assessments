@@ -132,6 +132,13 @@ use GuzzleHttp\Client;
         {!! Html::script('js/buttons.print.min.js') !!}
         {!! Html::script('js/select2.min.js') !!}
 
+        <script src="https://cdn.tiny.cloud/1/jfvh2wk8zeoiywtvm9xo4lqm41reqxr8dcwgqbm4eml37v76/tinymce/5/tinymce.min.js" referrerpolicy="origin"/></script>
+        <script>
+            tinymce.init({
+            selector: '.wysiwyg'
+            });
+        </script>
+
         <script type="text/javascript">
             $(document).ready(function () {
                 $('#myTable1').DataTable({

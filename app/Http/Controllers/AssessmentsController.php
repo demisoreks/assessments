@@ -19,6 +19,80 @@ class AssessmentsController extends Controller
         return view('assessments.index', compact('assessments'));
     }
 
+    public function create() {
+        return view('assessments.create');
+    }
+
+    public function store(Request $request) {
+        $input = $request->input();
+        $input['title'] = $input['title1'];
+        unset($input['title1']);
+        $error = "";
+        $existing_assessments = AssAssessment::where('title', $input['title']);
+        if ($existing_assessments->count() != 0) {
+            $error .= "Asessment title already exists.<br />";
+        }
+        if ($error != "") {
+            return Redirect::back()
+                    ->with('error', UtilsController::response('Oops!', $error))
+                    ->withInput();
+        } else {
+            $assessment = AssAssessment::create($input);
+            if ($assessment) {
+                return Redirect::route('assessments.index')
+                        ->with('success', UtilsController::response('Successful!', 'Assessment has been created.'));
+            } else {
+                return Redirect::back()
+                        ->with('error', UtilsController::response('Unknown error!', 'Please contact administrator.'))
+                        ->withInput();
+            }
+        }
+    }
+
+    public function edit(AssAssessment $assessment) {
+        $assessment->title1 = $assessment->title;
+        return view('assessments.edit', compact('assessment'));
+    }
+
+    public function update(AssAssessment $assessment, Request $request) {
+        $input = $request->input();
+        $input['title'] = $input['title1'];
+        unset($input['title1']);
+        $error = "";
+        $existing_assessments = AssAssessment::where('title', $input['title'])->where('id', '<>', $assessment->id);
+        if ($existing_assessments->count() != 0) {
+            $error .= "Assessment title already exists.<br />";
+        }
+        if ($error != "") {
+            return Redirect::back()
+                    ->with('error', UtilsController::response('Oops!', $error))
+                    ->withInput();
+        } else {
+            if ($assessment->update($input)) {
+                return Redirect::route('assessments.index')
+                        ->with('success', UtilsController::response('Successful!', 'Assessment has been updated.'));
+            } else {
+                return Redirect::back()
+                        ->with('error', UtilsController::response('Unknown error!', 'Please contact administrator.'))
+                        ->withInput();
+            }
+        }
+    }
+
+    public function disable(AssAssessment $assessment) {
+        $input['active'] = false;
+        $assessment->update($input);
+        return Redirect::route('assessments.index')
+                ->with('success', UtilsController::response('Successful!', 'Assessment has been disabled.'));
+    }
+
+    public function enable(AssAssessment $assessment) {
+        $input['active'] = true;
+        $assessment->update($input);
+        return Redirect::route('assessments.index')
+                ->with('success', UtilsController::response('Successful!', 'Assessment has been enabled.'));
+    }
+
     public function take(AssAssessment $assessment) {
         return view('general.take', compact('assessment'));
     }
