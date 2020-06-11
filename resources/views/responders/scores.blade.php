@@ -22,7 +22,7 @@
 <div class="row">
     <div class="col-12">
         <table class="table table-bordered table-responsive-md" width="100%">
-            @foreach (App\AssCategory::where('active', true)->orderBy('order_number')->get() as $category)
+            @foreach (App\AssCategory::where('assessment_id', $assessment->id)->where('active', true)->orderBy('order_number')->get() as $category)
             <tr>
                 <td>
                     <div class="row">
