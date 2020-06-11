@@ -18,7 +18,7 @@
 </div>
 <?= html_entity_decode($assessment->information) ?>
 <table class="table table-bordered table-responsive-md" width="100%">
-    @foreach (App\AssCategory::where('active', true)->orderBy('order_number')->get() as $category)
+    @foreach (App\AssCategory::where('assessment_id', $assessment->id)->where('active', true)->orderBy('order_number')->get() as $category)
     <tr>
         <td>
             <div class="row">
@@ -56,23 +56,23 @@
         $(".select-option").change(function() {
             var option_id  = $(this).val();
             var myString = "";
-            
+
             var ajaxRequest = null;
-            
+
             var browser = navigator.appName;
             if (browser == "Microsoft Internet Explorer") {
                 ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
             } else {
                 ajaxRequest = new XMLHttpRequest();
             }
-            
+
             ajaxRequest.onreadystatechange = function() {
                 if (ajaxRequest.readyState == 4) {
                     var json_object = JSON.parse(ajaxRequest.responseText);
                     $('#remark'+json_object.item_id).text(json_object.remark);
                 }
             }
-            
+
             ajaxRequest.open("GET", "../../option/"+option_id, true);
             ajaxRequest.send(null);
         });
