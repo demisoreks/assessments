@@ -33,7 +33,7 @@
                                     <th><strong>REVIEWER</strong></th>
                                     <th><strong>EMAIL ADDRESS</strong></th>
                                     <th><strong>ORGANIZATION</strong></th>
-                                    @foreach (App\AssCategory::where('active', true)->get() as $category)
+                                    @foreach (App\AssCategory::where('assessment_id', $assessment->id)->where('active', true)->get() as $category)
                                     <th data-priority="1"><strong>{{ strtoupper($category->description) }}</strong></th>
                                     @endforeach
                                     <th data-priority="1"><strong>TOTAL</strong></th>
@@ -48,7 +48,7 @@
                                     <td>{{ $responder->reviewer_name }}</td>
                                     <td>{{ $responder->email }}</td>
                                     <td>{{ $responder->organization_name }}</td>
-                                    @foreach (App\AssCategory::where('active', true)->get() as $category)
+                                    @foreach (App\AssCategory::where('assessment_id', $assessment->id)->where('active', true)->get() as $category)
                                     <td align="right">{{ App\AssResponse::where('responder_id', $responder->id)->whereIn('item_id', App\AssItem::where('category_id', $category->id)->pluck('id')->toArray())->sum('option_score') }}</td>
                                     @endforeach
                                     <td align="right">{{ App\AssResponse::where('responder_id', $responder->id)->sum('option_score') }}</td>

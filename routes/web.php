@@ -69,7 +69,7 @@ Route::bind('options', function($value, $route) {
 
 Route::get('assessments/{responder}/result', [
     'as' => 'assessments.result', 'uses' => 'AssessmentsController@result'
-])->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
+]);
 Route::get('assessments/{assessment}/responders/{responder}/scores', [
     'as' => 'assessments.responders.scores', 'uses' => 'RespondersController@scores'
 ])->middleware(['auth.user', 'auth.access:'.$link_id.',Manager']);
