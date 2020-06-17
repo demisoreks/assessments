@@ -37,7 +37,7 @@
                 </tr>
             </table>
         </div>
-        @foreach (App\AssCategory::where('active', true)->orderBy('order_number')->get() as $category)
+        @foreach (App\AssCategory::where('assessment_id', $assessment->id)->where('active', true)->orderBy('order_number')->get() as $category)
         <div style="width: 700px; margin: 0 auto;">
             <strong>{{ $category->description }} (Category Score: {{ App\AssResponse::whereIn('item_id', App\AssItem::where('category_id', $category->id)->pluck('id')->toArray())->where('responder_id', $responder->id)->sum('option_score') }} out of {{ App\AssResponse::whereIn('item_id', App\AssItem::where('category_id', $category->id)->pluck('id')->toArray())->where('responder_id', $responder->id)->sum('item_weight') }})</strong>
         </div>
